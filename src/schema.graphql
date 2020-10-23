@@ -1,0 +1,10 @@
+type Query {
+    hello(name: String): String!,
+    cantidad: Int!,
+    getUser: User!
+}
+
+type User {
+    name: String!,
+    lastName: String!
+}
