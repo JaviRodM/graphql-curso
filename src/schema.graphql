@@ -16,7 +16,8 @@ type Author {
     id: ID!,
     name: String!,
     country: String!,
-    register_by: User! 
+    register_by: User!,
+    books: [ Book! ]!
 }
 
 type Book {
@@ -25,5 +26,6 @@ type Book {
     description: String!,
     quantity: Int!,
     price: Int!,
-    write_by: Author!
+    write_by: Author!,
+    register_by: User!
 }
