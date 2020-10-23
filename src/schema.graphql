@@ -9,7 +9,8 @@ type Query {
 type User {
     id: ID!
     name: String!,
-    lastName: String!
+    lastName: String!,
+    email: String!
 }
 
 type Author {
@@ -28,4 +29,19 @@ type Book {
     price: Int!,
     write_by: Author!,
     register_by: User!
+}
+
+type Mutation {
+    createUser(
+        name: String!,
+        lastName: String!,
+        email: String!,
+        password: String!
+    ): User!,
+    updateUser(
+        id: ID!,
+        name: String,
+        email: String,
+        password: String
+    ): User!
 }
