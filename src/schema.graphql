@@ -59,6 +59,25 @@ type Mutation {
         name: String
         country: String
         register_by: ID
-    ):Author!
+    ):Author!,
+
+    createBook(
+        title: String!,
+        description: String!,
+        quantity: Int!,
+        price: Int!,
+        write_by: ID!,
+        register_by: ID!
+    ): Book!,
+
+    updateBook(
+        id: ID!
+        title: String,
+        description: String,
+        quantity: Int,
+        price: Int,
+        write_by: ID,
+        register_by: ID
+    ): Book!
 
 }

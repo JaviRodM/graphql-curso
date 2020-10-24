@@ -68,6 +68,39 @@ const Mutation = {
         })
 
         return {...existAuthor, ...data}
+    },
+    createBook: (parent, args, {db}, info) => {
+        const newBook = {
+            id: uuidv4(),
+            ...args
+        }
+
+        const existBook = db.books.some(book => book.title === newBook.title)
+        if (existBook) {
+            throw new Error(`Sorry that book exist`)
+        }
+
+        db.books.push(newBook)
+
+        return newBook
+    },
+    updateBook: (parent, args, {db}, info) => {
+        const {id, ...data} = args;
+        const existBook = db.books.find(book => book.id === id)
+        if (!existBook) {
+            throw new Error(`Thats book does not exist`)
+        }
+
+        db.books = db.books.map(book => {
+            if (book.id === id) {
+                book = {...book, ...data}
+                return book
+            }
+
+            return book
+        })
+
+        return {...existBook, ...data}
     }
 }
 
