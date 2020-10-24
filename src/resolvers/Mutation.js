@@ -49,7 +49,6 @@ const Mutation = {
 
         return author
     },
-
     updateAuthor: (parent, args, {db}, info) => {
         const { id, ...data} = args
         const existAuthor = db.authors.find(author => author.id === id)
