@@ -28,13 +28,9 @@ const Mutation = {
             throw new Error('Thats email is taken')
         }
 
-        if (isEmailTaken) {
-            throw new Error('email is taken')
-        }
-
         db.users = db.users.map(user => {
             if (user.id === id) {
-                users = {...user, ...data}
+                user = {...user, ...data}
                 return user
             }
             return user
@@ -42,6 +38,36 @@ const Mutation = {
 
         return {...existUser, ...data}
 
+    },
+    createAuthor: (parent, args, {db}, info) => {
+        const author = {
+            id: uuidv4(),
+            ...args
+        }
+
+        db.authors.push(author)
+
+        return author
+    },
+
+    updateAuthor: (parent, args, {db}, info) => {
+        const { id, ...data} = args
+        const existAuthor = db.authors.find(author => author.id === id)
+
+        if (!existAuthor) {
+            throw new Error('Author not exist')
+        }
+
+        db.authors = db.authors.map(author => {
+            if (author.id === id) {
+                author = {...author, ...data}
+                return author
+            }
+
+            return author
+        })
+
+        return {...existAuthor, ...data}
     }
 }
 
