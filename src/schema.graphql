@@ -34,50 +34,78 @@ type Book {
 type Mutation {
 
     createUser(
-        name: String!,
-        lastName: String!,
-        email: String!,
-        password: String!
+        data: createUserInput
     ): User!,
 
     updateUser(
         id: ID!,
-        name: String,
-        lastName: String,
-        email: String,
-        password: String
+        data: updateUserInput
     ): User!,
 
     createAuthor(
-        name: String!
-        country: String!
-        register_by: ID!
+        data: createAuthorInput
     ):Author!,
 
     updateAuthor(
         id: ID!
-        name: String
-        country: String
-        register_by: ID
+        data: updateAuthorInput
     ):Author!,
 
     createBook(
-        title: String!,
-        description: String!,
-        quantity: Int!,
-        price: Int!,
-        write_by: ID!,
-        register_by: ID!
+        data: createBookInput
     ): Book!,
 
     updateBook(
         id: ID!
-        title: String,
-        description: String,
-        quantity: Int,
-        price: Int,
-        write_by: ID,
-        register_by: ID
-    ): Book!
+        data: updateBookInput
+    ): Book!,
 
+    deleteBook(
+        id: ID!
+    ):Book!,
+
+}
+
+input createUserInput {
+    name: String!,
+    lastName: String!,
+    email: String!,
+    password: String!
+}
+
+input updateUserInput {
+    name: String,
+    lastName: String,
+    email: String,
+    password: String
+}
+
+input createAuthorInput {
+    name: String!
+    country: String!
+    register_by: ID!
+}
+
+input updateAuthorInput {
+    name: String
+    country: String
+    register_by: ID
+}
+
+input createBookInput {
+    title: String!,
+    description: String!,
+    quantity: Int!,
+    price: Int!,
+    write_by: ID!,
+    register_by: ID!
+}
+
+input updateBookInput {
+    title: String,
+    description: String,
+    quantity: Int,
+    price: Int,
+    write_by: ID,
+    register_by: ID
 }

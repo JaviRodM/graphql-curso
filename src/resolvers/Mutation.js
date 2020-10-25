@@ -1,31 +1,44 @@
 import { v4 as uuidv4 } from 'uuid'
 
+const showMsj = msj => {
+    throw new Error(msj)
+}
+
+const encontar = (db, id, msj) => {
+
+    const exist = db.find(item => item.id === id)
+    if (!exist) {
+        throw new Error(msj)
+    }
+
+    return exist
+}
+
 const Mutation = {
-    createUser: (parent, args, {db}, info) => {
-        const isEmailTaken = db.users.some(user => user.email === args.email)
+    createUser: (parent, {data}, {db}, info) => {
+        const isEmailTaken = db.users.some(user => user.email === data.email)
         if (isEmailTaken) {
-            throw new Error('Thats email is taken')
+            showMsj(`Email is Taken`)
         }
 
         const user = {
             id: uuidv4(),
-            ...args
+            ...data
         }
 
         db.users.push(user)
 
         return user
     },
-    updateUser: (parent, args, {db}, info) => {
-        const {id, ...data} = args
+    updateUser: (parent, {id, data}, {db}, info) => {
         const existUser = db.users.find(user => user.id === id)
         if (!existUser) {
-            throw new Error('User not exist')
+            showMsj('User not exist')
         }
 
         const isEmailTaken = db.users.some(user => user.email === data.email)
         if (isEmailTaken) {
-            throw new Error('Thats email is taken')
+            showMsj('Thats email is taken')
         }
 
         db.users = db.users.map(user => {
@@ -39,22 +52,21 @@ const Mutation = {
         return {...existUser, ...data}
 
     },
-    createAuthor: (parent, args, {db}, info) => {
+    createAuthor: (parent, {data}, {db}, info) => {
         const author = {
             id: uuidv4(),
-            ...args
+            ...data
         }
 
         db.authors.push(author)
 
         return author
     },
-    updateAuthor: (parent, args, {db}, info) => {
-        const { id, ...data} = args
+    updateAuthor: (parent, {id, data}, {db}, info) => {
         const existAuthor = db.authors.find(author => author.id === id)
 
         if (!existAuthor) {
-            throw new Error('Author not exist')
+            showMsj('Author not exist')
         }
 
         db.authors = db.authors.map(author => {
@@ -68,26 +80,25 @@ const Mutation = {
 
         return {...existAuthor, ...data}
     },
-    createBook: (parent, args, {db}, info) => {
+    createBook: (parent, {data}, {db}, info) => {
         const newBook = {
             id: uuidv4(),
-            ...args
+            ...data
         }
 
         const existBook = db.books.some(book => book.title === newBook.title)
         if (existBook) {
-            throw new Error(`Sorry that book exist`)
+            showMsj(`Sorry that book exist`)
         }
 
         db.books.push(newBook)
 
         return newBook
     },
-    updateBook: (parent, args, {db}, info) => {
-        const {id, ...data} = args;
+    updateBook: (parent, {id,data}, {db}, info) => {
         const existBook = db.books.find(book => book.id === id)
         if (!existBook) {
-            throw new Error(`Thats book does not exist`)
+            showMsj(`Thats book does not exist`)
         }
 
         db.books = db.books.map(book => {
@@ -100,6 +111,21 @@ const Mutation = {
         })
 
         return {...existBook, ...data}
+    },
+    deleteBook:(parent, {id}, {db}, info) => {
+        const existBook = db.books.find(book => book.id === id)
+        if (!existBook) {
+            showMsj(`Book not found`)
+        }
+
+        db.books = db.books.reduce((acc, book) => {
+            if (book.id !== id) {
+                acc.push(book)
+            }
+            return acc
+        },[])
+
+        return existBook
     }
 }
 
