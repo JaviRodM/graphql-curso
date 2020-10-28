@@ -52,17 +52,23 @@ const Mutation = {
         return {...existUser, ...data}
 
     },
-    createAuthor: (parent, {data}, {db}, info) => {
+    createAuthor: (parent, {data}, {db, pubsub}, info) => {
         const author = {
             id: uuidv4(),
             ...data
         }
 
         db.authors.push(author)
+        pubsub.publish('author', {
+            author: {
+                mutation: 'CREATED',
+                data: author
+            }
+        })
 
         return author
     },
-    updateAuthor: (parent, {id, data}, {db}, info) => {
+    updateAuthor: (parent, {id, data}, {db, pubsub}, info) => {
         const existAuthor = db.authors.find(author => author.id === id)
 
         if (!existAuthor) {
@@ -78,7 +84,16 @@ const Mutation = {
             return author
         })
 
-        return {...existAuthor, ...data}
+        const authorUpdated = {...existAuthor, ...data}
+
+        pubsub.publish('author', {
+            author: {
+                mutation: 'UPDATED',
+                data: authorUpdated,
+            }
+        })
+
+        return authorUpdated
     },
     createBook: (parent, {data}, {db}, info) => {
         const newBook = {

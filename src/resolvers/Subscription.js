@@ -11,6 +11,12 @@ const Subscription = {
 
             return pubsub.asyncIterator('count')
         }
+    },
+
+    author: {
+        subscribe(parent, args, {pubsub}, info){
+            return pubsub.asyncIterator('author')
+        }
     }
 }
 

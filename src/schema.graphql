@@ -67,7 +67,8 @@ type Mutation {
 }
 
 type Subscription {
-    count: Int!
+    count: Int!,
+    author: AuthorSubscription!
 }
 
 input createUserInput {
@@ -112,4 +113,9 @@ input updateBookInput {
     price: Int,
     write_by: ID,
     register_by: ID
+}
+
+type AuthorSubscription {
+    mutation: String!
+    data: Author!
 }
